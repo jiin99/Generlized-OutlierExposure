@@ -13,7 +13,7 @@ Generalized OE is an effective training algorithm to obtain a reliable OoD detec
 <img align="center" src="./fig/visualize.png" width="700">
 A confidence surface of each experiment on a 2D spiral dataset. The color barrepresents how a model is confident in its predictions:  the higher the confidence, the closerto yellow, and the lower the confidence, the closer to dark blue.
 
-### Environment
+## Environment
 
 * Python >= 3.6
 
