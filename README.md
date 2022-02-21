@@ -33,6 +33,8 @@ Unlike the original [OE paper](https://arxiv.org/abs/1812.04606), which remove s
 * [**80 Million Tiny Images**](http://www.archive.org/download/80-million-tiny-images-2-of-2/tiny_images.bin)
 
 ## Outlier Datasets for test
+
+SC-OOD dataset can be downloaded by the following link: [SC-OOD dataset download](https://drive.google.com/file/d/1cbLXZ39xnJjxXnDM7g2KODHIjE0Qj4gu/view).
 * [SC-OOD dataset](https://github.com/jingkang50/ICCV21_SCOOD)
 * Blobs
 * Gaussian
@@ -40,7 +42,7 @@ Unlike the original [OE paper](https://arxiv.org/abs/1812.04606), which remove s
 ## Train a model
 
 ```Python
-python main.py --dataset cifar100 --model res34 --gpu-id 0 --trial 01 --filtering_schedule 100 --save-path ./save-path/
+python main.py --dataset cifar100 --model res34 --gpu-id 0 --trial 01 --filtered_num 20 ----estimation-func msp --strategy static --save-path ./save-path/
 ```
 
 ## Evaluate a model
@@ -57,4 +59,5 @@ python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-pa
 * AUPR
 
 ## Results
+The results are extracted from our paper "A Unified Benchmark for Unknown Detection Capability of Deep Neural Networks.”
 <img align="center" src="./fig/main_results.png" width="700">
