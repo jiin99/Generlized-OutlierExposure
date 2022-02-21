@@ -59,5 +59,4 @@ python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-pa
 * AUPR
 
 ## Results
-The results are extracted from our paper "A Unified Benchmark for Unknown Detection Capability of Deep Neural Networks.”
 <img align="center" src="./fig/main_results.png" width="700">
