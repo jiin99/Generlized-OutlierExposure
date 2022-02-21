@@ -32,8 +32,8 @@ parser.add_argument('--model', '-m', type=str, default='wrn',
 parser.add_argument('--exclude', action='store_true', help='tiny imagenet exclude cifar flag.')
 parser.add_argument('--exp-type', default= 'oe-mixup',#['baseline', 'oe', 'mixup-oe'],
                     help='experiment methods.')
-parser.add_argument('--weight', type=float, default=0.5) 
-parser.add_argument('--oe-weight', type=float, default=0.5)
+parser.add_argument('--weight', type=float, default=0.5, help='loss weight for Mixup term') 
+parser.add_argument('--oe-weight', type=float, default=0.5, help='loss weight for OE term')
 parser.add_argument('--alpha', type=float, default=1.0, help='beta distribution param for mixup.') 
 parser.add_argument('--beta', type=float, default=1.0, , help='beta distribution param for mixup.') 
 parser.add_argument('--strategy', type=str, default='static', help='type of filtering strategy (static or adaptive).') 
@@ -42,8 +42,8 @@ parser.add_argument('--filtered_num', default=20, type=int, help='number of filt
 # Optimization options
 parser.add_argument('--epochs', '-e', type=int, default=200, help='Number of epochs to train.')
 parser.add_argument('--learning-rate', '-lr', type=float, default=0.1, help='The initial learning rate.')
-parser.add_argument('--batch-size', '-b', type=int, default=128, help='Batch size.')
-parser.add_argument('--oe-batch-size', type=int, default=256, help='Batch size.')
+parser.add_argument('--batch-size', '-b', type=int, default=128, help='Batch size for ID.')
+parser.add_argument('--oe-batch-size', type=int, default=256, help='Batch size for OoD.')
 parser.add_argument('--momentum', type=float, default=0.9, help='Momentum.')
 parser.add_argument('--decay', '-d', type=float, default=0.0005, help='Weight decay (L2 penalty).')
 # WRN Architecture
