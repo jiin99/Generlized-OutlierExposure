@@ -39,12 +39,28 @@ SC-OOD dataset can be downloaded by the following link: [SC-OOD dataset download
 ```Python
 python main.py --dataset cifar100 --model res34 --gpu-id 0 --trial 01 --filtered_num 20 ----estimation-func msp --strategy static --save-path ./save-path/
 ```
-
 ## Evaluate a model
 
 ```Python
 python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-path/
 ```
+### Arguments
+
+  |       name       |type |   available values   |                               help                             |
+  |:----------------:|:---:|:--------------------:|:---------------------------------------------------------------|
+  |    dataset       | str |   cifar10, cifar100  |                  choose ID dataset between cifar10 and cifar100|
+  |    model         | str |   wrn, dense, res34  |                      choose architecture                       |
+  |    batch-size    | int |          int         |                             batch size for ID                  |
+  |   oe-batch-size  | int |          int      |                             batch size for OoD                  |
+  |     droprate      | float |         float        |                    dropout probability                  |
+  |     weight      | float |         float        |             final loss weight for RandomMixup term                 |
+  |     oe-weight      | float |         float        |              final loss weight for OE term                  |
+  |     strategy      | str |         static, adaptive     |              type of filtering strategy                 |
+  |     estimation-func      | str |   msp, margin, entropy     |        type of uncertainty estimation function     |
+  |     filtered_num      | int |   int     |  number of filtering samples, which indicates hyperparameter k in paper    |
+  |     save     | str |    save directory    |             directory where the results will be saved         |
+  |      trial       | str |         str          |                 the number of trial experiments                |
+
 
 ### Evaluation metrics
 * ACC
