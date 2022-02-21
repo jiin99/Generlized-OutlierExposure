@@ -27,9 +27,6 @@ This repository is the official implementation of Generalized Outlier Exposure. 
 * CIFAR10, CIFAR100
 
 ## Outlier Dataset for train
-
-Unlike the original [OE paper](https://arxiv.org/abs/1812.04606), which remove some examples from the outlier dataset, we used the outlier dataset as it is. 
-
 * [**80 Million Tiny Images**](http://www.archive.org/download/80-million-tiny-images-2-of-2/tiny_images.bin)
 
 ## Outlier Datasets for test
