@@ -14,6 +14,7 @@ This repository is the official implementation of Generalized Outlier Exposure. 
 [Outlier Exposure](https://github.com/hendrycks/outlier-exposure), [SC-OOD](https://github.com/jingkang50/ICCV21_SCOOD), [Unknown Detection](https://github.com/daintlab/unknown-detection-benchmarks), [Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
 <img align="center" src="./fig/visualize.png" width="700">
+Visulaize the idea of G-OE: A confidence surface of each experiment on a 2D spiral dataset. The color barrepresents how a model is confident in its predictions:  the higher the confidence, the closerto yellow, and the lower the confidence, the closer to dark blue.
 
 ### Environment
 
