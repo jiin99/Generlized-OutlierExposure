@@ -9,7 +9,7 @@ This repository is the official implementation of Generalized Outlier Exposure. 
 # Overview
 Generalized OE is an effective training algorithm to obtain a reliable OoD detector in real-world scenarios. Existing OE-based methods have shown strong OoD detection performance, however, they have the performance degradation issue on ID. G-OE successfully overcomes the drawbacks of current OE-based methods by utilizing RandomMixup and a filtering strategy simultaneously.
 
-# Visualize the effect of G-OE
+## Visualize the effect of G-OE
 <img align="center" src="./fig/visualize.png" width="700">
 A confidence surface of each experiment on a 2D spiral dataset. The color barrepresents how a model is confident in its predictions:  the higher the confidence, the closerto yellow, and the lower the confidence, the closer to dark blue.
 
