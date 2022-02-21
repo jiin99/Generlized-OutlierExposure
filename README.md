@@ -55,3 +55,6 @@ python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-pa
 * FRR at 95% TPR
 * AUROC
 * AUPR
+
+## Results
+<img align="center" src="https://files.slack.com/files-pri/TA7PY9PUN-F033X35V3J7/image.png" width="700">
