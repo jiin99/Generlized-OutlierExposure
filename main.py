@@ -273,9 +273,9 @@ def filtering_strategy(strategy, estimation_func, net, inputs_in, out_data, targ
             out_value = -1 * out_value
         
         if strategy == 'static' : 
-            thread = in_value.mean()
-        else : 
             thread = in_value.sort()[0][:args.filtered_num][-1]
+        else : 
+            thread = in_value.mean()
 
         cut_value = out_value.ge(thread)
 
