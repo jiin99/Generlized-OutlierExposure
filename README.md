@@ -13,7 +13,7 @@
 This repository is the official implementation of Generalized Outlier Exposure. A part of code has been based on the public code of
 [Outlier Exposure](https://github.com/hendrycks/outlier-exposure), [SC-OOD](https://github.com/jingkang50/ICCV21_SCOOD), [Unknown Detection](https://github.com/daintlab/unknown-detection-benchmarks), [Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
-<img align="center" src="/visualize/figures.png" width="700">
+<img align="center" src="https://github.com/jiin99/Outlier-Exposure-with-Mixup/blob/main/visualize/figures.png?raw=true" width="700">
 
 ### Environment
 
