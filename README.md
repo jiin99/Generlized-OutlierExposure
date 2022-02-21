@@ -13,7 +13,7 @@
 This repository is the official implementation of Generalized Outlier Exposure. A part of code has been based on the public code of
 [Outlier Exposure](https://github.com/hendrycks/outlier-exposure), [SC-OOD](https://github.com/jingkang50/ICCV21_SCOOD), [Unknown Detection](https://github.com/daintlab/unknown-detection-benchmarks), [Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
-<img align="center" src="https://github.com/jiin99/Outlier-Exposure-with-Mixup/blob/main/visualize/figures.png?raw=true" width="700">
+<img align="center" src="./fig/visualize.png" width="700">
 
 ### Environment
 
@@ -57,4 +57,4 @@ python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-pa
 * AUPR
 
 ## Results
-<img align="center" src="https://files.slack.com/files-pri/TA7PY9PUN-F033X35V3J7/image.png" width="700">
+<img align="center" src="./fig/main_results.png" width="700">
