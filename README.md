@@ -55,9 +55,7 @@ python test.py --dataset cifar100 --model res34 --conf mcp --gpu-id 0 --datapath
   |     droprate      | float |         float        |                    dropout probability                  |
   |     weight      | float |         float        |             final loss weight for RandomMixup term                 |
   |     oe-weight      | float |         float        |              final loss weight for OE term                  |
-  |     strategy      | str |         static, adaptive     |              type of filtering strategy                 |
-  |     estimation-func      | str |   msp, margin, entropy     |        type of uncertainty estimation function     |
-  |     filtered_num      | int |   int     |  number of filtering samples, which indicates hyperparameter k in paper    |
+  |     filtered_num      | int |   int     |  number of samples to filter out, which indicates hyperparameter k in paper    |
   |     save     | str |    save directory    |             directory where the results will be saved         |
   |      trial       | str |         str          |                 the number of trial experiments                |
 
