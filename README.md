@@ -37,12 +37,12 @@ SC-OOD dataset can be downloaded by the following link: [SC-OOD dataset download
 ## Train a model
 
 ```Python
-python main.py --dataset cifar100 --model res34 --gpu-id 0 --trial 01 --filtered_num 20 ----estimation-func msp --strategy static --save-path ./save-path/
+python main.py --dataset cifar100 --model res34 --exp-type G-OE --filtered_num 20 --trial 01 --gpu-id 0 --save-path ./save-path/
 ```
 ## Evaluate a model
 
 ```Python
-python test.py --dataset cifar100 --model res34 --gpu-id 0 --save-path ./save-path/
+python test.py --dataset cifar100 --model res34 --conf mcp --gpu-id 0 --datapath --save-path ./save-path/
 ```
 ### Arguments
 
