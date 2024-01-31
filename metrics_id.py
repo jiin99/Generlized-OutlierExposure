@@ -139,4 +139,4 @@ def ece(conf, corr, bins=15):
     print(f'* ECE\t\t{round(ece.item()*100, 2)}')
 
     return ece.item(), li_acc, li_count
-
+    
