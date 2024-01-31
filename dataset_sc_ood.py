@@ -16,7 +16,9 @@ from torch.utils.data import Dataset
 from pathlib import Path
 
 from torch.utils.data import DataLoader
-
+import torchvision.transforms as trn
+import torchvision.datasets as dset
+from torch.utils.data.sampler import SubsetRandomSampler
 
 class BaseDataset(Dataset):
     def __init__(self, psudo_index=-1, skip_broken=False, new_index="next"):
@@ -97,34 +99,65 @@ def get_transforms(
     std: List[float],
     stage: str,
     interpolation: str = "bilinear",
+    name : str = 'cifar10',
+    model : str = None
 ):
     interpolation_modes = {
         "nearest": InterpolationMode.NEAREST,
         "bilinear": InterpolationMode.BILINEAR,
     }
     color_mode = "RGB"
-
     interpolation = interpolation_modes[interpolation]
-
     if stage == "train":
-        return trn.Compose(
-            [
-                Convert(color_mode),
-                trn.Resize(32, interpolation=interpolation),
-                trn.CenterCrop(32),
-                trn.RandomHorizontalFlip(),
-                trn.RandomCrop(32, padding=4),
-                trn.ToTensor(),
-                trn.Normalize(mean, std),
-            ]
-        )
+        if (model == 'vit') or (model == 'deit'):
+            if model == 'vit':
+                mean =  (0.5, 0.5, 0.5)
+                std= (0.5, 0.5, 0.5)
+            elif model == 'deit':
+                mean = (0.485, 0.456, 0.406)
+                std = (0.229, 0.224, 0.225)
+
+            scale = (0.2, 1.)
+            return trn.Compose([
+                        trn.RandomResizedCrop(size=224, scale=scale),
+                        trn.RandomHorizontalFlip(),
+                        trn.ToTensor(),
+                        trn.Normalize(mean, std),
+                        #transforms.RandomErasing(p=0.2)
+                    ])
+        else :  
+            return trn.Compose(
+                [
+                    Convert(color_mode),
+                    trn.Resize(32, interpolation=interpolation),
+                    trn.CenterCrop(32),
+                    trn.RandomHorizontalFlip(),
+                    trn.RandomCrop(32, padding=4),
+                    trn.ToTensor(),
+                    trn.Normalize(mean, std),
+                ]
+            )
 
     elif stage == "test":
-        return trn.Compose(
+        if (model == 'vit') or (model == 'deit'):
+            if model == 'vit' :
+                mean =  (0.5, 0.5, 0.5)
+                std= (0.5, 0.5, 0.5)
+            elif model == 'deit':
+                mean = (0.485, 0.456, 0.406)
+                std = (0.229, 0.224, 0.225)
+            scale = (0.2, 1.)
+            return trn.Compose([
+                    trn.Resize((224,224)),
+                    trn.ToTensor(),
+                    trn.Normalize(mean, std)
+                ])
+        else : 
+            return trn.Compose(
             [
-                Convert(color_mode),
-                trn.Resize(32, interpolation=interpolation),
-                trn.CenterCrop(32),
+                # Convert(color_mode),
+                trn.Resize((32,32)),
+                # trn.CenterCrop(32),
                 trn.ToTensor(),
                 trn.Normalize(mean, std),
             ]
@@ -143,10 +176,10 @@ class ImagenameDataset(BaseDataset):
         maxlen=None,
         dummy_read=False,
         dummy_size=None,
+        model=None,
         **kwargs
     ):
         super(ImagenameDataset, self).__init__(**kwargs)
-
         self.name = name
 
         with open(imglist) as imgfile:
@@ -154,9 +187,9 @@ class ImagenameDataset(BaseDataset):
         self.root = root
 
         mean, std = dataset_stats[stage] if stage == "test" else dataset_stats[name]
-        self.transform_image = get_transforms(mean, std, stage, interpolation)
+        self.transform_image = get_transforms(mean, std, stage, interpolation, name, model)
         # basic image transformation for online clustering (without augmentations)
-        self.transform_aux_image = get_transforms(mean, std, "test", interpolation)
+        self.transform_aux_image = get_transforms(mean, std, "test", interpolation, name, model)
 
         self.num_classes = num_classes
         self.maxlen = maxlen
@@ -241,12 +274,12 @@ def get_dataset(
     name: str = "cifar100",
     stage: str = "train",
     interpolation: str = "bilinear",
+    model : str = None
 ):
     # root_dir = Path(root_dir)
     root_dir = Path(os.path.join('/data',root_dir))
     data_dir = "data" / root_dir / "images"
     imglist_dir = "data" / root_dir / "imglist" / f"benchmark_{benchmark}"
-
     return ImagenameDataset(
         name=name,
         stage=stage,
@@ -254,6 +287,7 @@ def get_dataset(
         imglist=imglist_dir / f"{stage}_{name}.txt",
         root=data_dir,
         num_classes=num_classes,
+        model = model,
     )
 
 
@@ -267,8 +301,9 @@ def get_dataloader(
     batch_size: int = 128,
     shuffle: bool = True,
     num_workers: int = 4,
+    model :str = None
 ):
-    dataset = get_dataset(root_dir, benchmark, num_classes, name, stage, interpolation)
+    dataset = get_dataset(root_dir, benchmark, num_classes, name, stage, interpolation, model)
 
     return DataLoader(
         dataset,
@@ -276,3 +311,57 @@ def get_dataloader(
         shuffle=shuffle,
         num_workers=num_workers,
     )
+
+def get_trainloader(args):
+
+    mean = [x / 255 for x in [125.3, 123.0, 113.9]]
+    std = [x / 255 for x in [63.0, 62.1, 66.7]]
+    if (args.model == 'vit') or (args.model == 'deit'):
+        if args.model == 'vit':
+            mean =  (0.5, 0.5, 0.5)
+            std= (0.5, 0.5, 0.5)
+        elif args.model == 'deit':
+            mean = (0.485, 0.456, 0.406)
+            std = (0.229, 0.224, 0.225)
+        scale = (0.2, 1.)
+        train_transform = trn.Compose([
+                    trn.RandomResizedCrop(size=224, scale=scale),
+                    trn.RandomHorizontalFlip(),
+                    trn.ToTensor(),
+                    trn.Normalize(mean, std),
+                    #transforms.RandomErasing(p=0.2)
+                ])
+        test_transform = trn.Compose([
+                trn.Resize((224,224)),
+                trn.ToTensor(),
+                trn.Normalize(mean, std)
+            ])
+    else : 
+        train_transform = trn.Compose([trn.RandomHorizontalFlip(), trn.RandomCrop(32, padding=4),
+                                trn.ToTensor(), trn.Normalize(mean, std)])
+        test_transform = trn.Compose([trn.ToTensor(), trn.Normalize(mean, std)])
+
+    valid_idx = []
+    if args.dataset == 'cifar10':
+        train_data = dset.CIFAR10(f'/{args.datapath}/cifar', train=True, transform=test_transform, download = True)
+        with open('./data_indices/valid_idx_cifar10.txt', 'r') as idxs:
+            for idx in idxs:
+                valid_idx.append(int(idx))
+
+    elif args.dataset == 'cifar100':
+        train_data = dset.CIFAR100(f'/{args.datapath}/cifar', train=True, transform=test_transform, download = True)
+        with open('./data_indices/valid_idx_cifar100.txt', 'r') as idxs:
+            for idx in idxs:
+                valid_idx.append(int(idx))
+
+    num_train = len(train_data)
+    indices = list(range(num_train))
+
+    train_idx = set(indices) - set(valid_idx)
+    train_idx = list(train_idx)
+
+    train_sampler = SubsetRandomSampler(train_idx)
+
+    train_loader = torch.utils.data.DataLoader(train_data, batch_size=args.batch_size, shuffle=False,
+                                           sampler=train_sampler,num_workers=4)
+    return train_loader

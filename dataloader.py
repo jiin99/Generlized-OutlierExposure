@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from skimage.filters import gaussian as gblur
 from tinyimages_80mn_loader import TinyImages_valid
 
-def out_dist_loader_cifar100(data, batch_size, mode,args, transform=False):
+def out_dist_loader_cifar(data, batch_size, mode,args, transform=False):
 
     mean = [x / 255 for x in [125.3, 123.0, 113.9]]
     stdv = [x / 255 for x in [63.0, 62.1, 66.7]]
@@ -27,7 +27,11 @@ def out_dist_loader_cifar100(data, batch_size, mode,args, transform=False):
     if (mode == 'valid') and (data == '80mn'):
         out_dataset = TinyImages_valid(transform = test_transform, args = args)
     elif data == 'blobs':
-        out_dataset = blobs()
+        if (args.model == 'vit' ) or (args.model == 'deit') : 
+            out_dataset = blobs(image_size = 224)
+        else:
+            out_dataset = blobs()
+        
     elif data == 'cifar10':
         out_dataset = dset.CIFAR10(root='./data', train=False, transform=test_transform)
         out_dataset.targets = [0]*len(out_dataset.targets)
@@ -35,7 +39,10 @@ def out_dist_loader_cifar100(data, batch_size, mode,args, transform=False):
         out_dataset = dset.CIFAR100(root='./data', train=False, transform=test_transform)
         out_dataset.targets = [0]*len(out_dataset.targets)
     elif data == 'gaussian-noise' :
-        out_dataset = gaussian_noise()
+        if (args.model == 'vit')or (args.model == 'deit') : 
+            out_dataset = gaussian_noise(image_size = 224)
+        else:
+            out_dataset = gaussian_noise()
 
     out_loader = torch.utils.data.DataLoader(out_dataset,
                                             batch_size=batch_size,
@@ -44,9 +51,9 @@ def out_dist_loader_cifar100(data, batch_size, mode,args, transform=False):
     return out_loader
 
 class gaussian_noise(object):
-    def __init__(self, transform = None):
+    def __init__(self, image_size = 32,transform = None):
         self.samples = torch.from_numpy(np.float32(np.clip(
-        np.random.normal(size=(10000, 3, 32, 32), scale=0.5), -1, 1)))
+        np.random.normal(size=(10000, 3, image_size, image_size), scale=0.5), -1, 1)))
         self.targets = torch.ones(size=(10000,))
         self.transform = transform
 
@@ -62,8 +69,8 @@ class gaussian_noise(object):
         return imgs, target
 
 class blobs(object):
-    def __init__(self, transform = None):
-        ood_data = np.float32(np.random.binomial(n=1, p=0.7, size=(10000, 32, 32, 3)))
+    def __init__(self, image_size = 32, transform = None):
+        ood_data = np.float32(np.random.binomial(n=1, p=0.7, size=(10000, image_size, image_size, 3)))
         for i in range(10000):
             ood_data[i] = gblur(ood_data[i], sigma=1.5, multichannel=False)
             ood_data[i][ood_data[i] < 0.75] = 0.0

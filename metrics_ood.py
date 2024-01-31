@@ -8,10 +8,10 @@ import torchvision.transforms as trn
 import torchvision.datasets as dset
 from torch.utils.data.sampler import SubsetRandomSampler
 
-from dataloader import out_dist_loader_cifar100
+from dataloader import out_dist_loader_cifar
 from utils import get_values
 from tinyimages_80mn_loader import TinyImages_valid
-from dataset_sc_ood import get_dataloader
+from dataset_sc_ood import get_dataloader, get_trainloader
 
 
 def get_curve(in_scores, out_scores, stypes=['Baseline']):
@@ -63,23 +63,25 @@ def ood_metrics_cifar100_sc(name, trial, mode, net, criterion, args, stypes=['re
     print(f"OoD: {name}")
     print('')
 
-    in_loader = get_dataloader(benchmark = args.dataset, num_classes = args.num_classes, name = args.dataset)
 
+    in_loader = get_dataloader(benchmark = args.dataset, num_classes = args.num_classes, name = args.dataset, model = args.model)
+    train_loader = get_trainloader(args)
+    
     if (name == 'blobs') or (name == 'gaussian-noise') : 
-        out_loader = out_dist_loader_cifar100(
+        out_loader = out_dist_loader_cifar(
                                  name,
                                  args.batch_size,
                                  mode,
                                  args)
     else : 
-        out_loader = get_dataloader(name = name)
-
+        out_loader = get_dataloader(name = name, model = args.model)
     
     _, id_pred, id_conf, id_ddood, id_scood = get_values(in_loader,
                                     net,
                                     criterion,
                                     args,
-                                    conf_func=args.conf)
+                                    conf_func=args.conf,
+                                    train_loader = train_loader)
     in_scores = id_conf
 
     if (name == 'blobs') or (name == 'gaussian-noise') : 
@@ -88,13 +90,15 @@ def ood_metrics_cifar100_sc(name, trial, mode, net, criterion, args, stypes=['re
                                         criterion,
                                         args,
                                         conf_func=args.conf,
-                                        benchmark='synthetic')
+                                        benchmark='synthetic',
+                                        train_loader = train_loader)
     else : 
         _, ood_pred, ood_conf, ood_ddood, ood_scood = get_values(out_loader,
                                         net,
                                         criterion,
                                         args,
-                                        conf_func=args.conf)
+                                        conf_func=args.conf,
+                                        train_loader = train_loader)
 
         pred = np.concatenate([id_pred, ood_pred])
         conf = np.concatenate([id_conf, ood_conf])
@@ -106,7 +110,6 @@ def ood_metrics_cifar100_sc(name, trial, mode, net, criterion, args, stypes=['re
         else : 
             out_scores = conf[label == -1]
            
-
     tp, fp, fpr_at_tpr95 = get_curve(in_scores, out_scores, stypes)
     results = dict()
 
@@ -192,12 +195,12 @@ def ood_metrics_cifar100_validation(out_data, trial, mode, net, criterion, args,
         with open('./valid_idx_cifar100.txt', 'r') as idxs:
             for idx in idxs:
                 valid_idx.append(int(idx))
-    
+
     valid_sampler = SubsetRandomSampler(valid_idx)
+
 
     ood_data = TinyImages_valid(transform=trn.Compose(
     [trn.ToTensor(), trn.ToPILImage(),trn.ToTensor(),trn.Normalize(mean, std)]),args = args)
-
 
     in_loader = torch.utils.data.DataLoader(valid_data, batch_size=args.batch_size, shuffle=False,
                                            sampler=valid_sampler,num_workers=4)
@@ -207,7 +210,7 @@ def ood_metrics_cifar100_validation(out_data, trial, mode, net, criterion, args,
     batch_size=args.batch_size, shuffle=False,
     num_workers=4)
 
-    out_loader = out_dist_loader_cifar100(
+    out_loader = out_dist_loader_cifar(
                                  out_data,
                                  args.batch_size,
                                  mode,
