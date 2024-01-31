@@ -18,7 +18,7 @@ import utils
 import metrics_id, metrics_ood
 from dataset_sc_ood import get_dataloader, get_trainloader
 from models import resnet, wrn, densenet_bc
-import vit
+# import vit
 parser = argparse.ArgumentParser(description='Generalized OE')
 parser.add_argument('--batch-size', default=64,
                     type=int,
@@ -65,15 +65,6 @@ def namespace_to_dict(namespace):
         for k, v in vars(namespace).items()
     }
 args_dict = namespace_to_dict(args)
-
-# args.save_path = os.path.join(args.save_path, args.dataset + '_' + args.model + '_' + str(args.weight)+ '_lr_' + str(args.learning_rate) + '_epoch_' + str(args.epochs))
-#str(args.weight) + '_' ) #percentile5
-
-# s_path = '/nas/home/jiin9/oe_mixup/EnergyGOE-finetune'
-# args.save_path = os.path.join(s_path, args.dataset + '_' + args.model + '_lr_' + str(args.learning_rate) + '_epoch_10')
-#import pdb; pdb.set_trace()
-
-# args.save_path = '/nas/home/jiin9/oe_mixup/performance_verification_220802_energy_final/oe-mixup_cifar10_excFalse_wrn_0.1_oe_0.5_ep_10'
 
 def main():
     os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu_id
@@ -173,7 +164,7 @@ def main():
                         dir_li.append(item)
                 state_dict = torch.load('{0}/{1}/checkpoints/ckpt_epoch_current.pth'.format(args.save_path,dir_li[nums]), map_location=torch.device("cpu"))['state_dict']
 
-        except: #FileNotFoundError:
+        except:
             continue
         
         try:
