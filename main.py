@@ -423,13 +423,14 @@ for epoch in range(start_epoch, args.epochs+start_epoch):
     acc = test()
     scheduler.step()
 
-    print('Epoch {0:3d} | Time {1:5d} | Train Loss {2:.4f} | Test Loss {3:.3f} | Test Error {4:.2f}'.format(
+    print('Epoch {0:3d} | Time {1:5d} | Train Loss {2:.4f} | Test Loss {3:.3f} | Test Accuracy {2:.2f}'.format(
         (epoch),
         int(time.time() - begin_epoch),
         state['train_loss'],
         state['test_loss'],
-        100 - 100. * state['test_accuracy'])
+        state['test_accuracy'])
     )
+
     if acc > best_acc : 
         best_acc = acc
         epoch_logger.write([epoch, best_acc])
