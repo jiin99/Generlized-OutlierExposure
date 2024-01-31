@@ -68,4 +68,4 @@ python test.py --dataset cifar100 --model res34 --conf mcp --gpu-id 0 --datapath
 * AUPR
 
 ## Results
-<img align="center" src="./fig/main_results.png" width="700">
+<img align="center" src="./fig/main_result.png" width="700">
