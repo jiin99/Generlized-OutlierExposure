@@ -3,6 +3,7 @@
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 
 This repository is the official implementation of [Generalized Outlier Exposure: Towards a trustworthy out-of-distribution detector without sacrificing accuracy](https://www.sciencedirect.com/science/article/abs/pii/S0925231224001425 ).
+
 A part of code has been based on the public code of
 [Outlier Exposure](https://github.com/hendrycks/outlier-exposure), [SC-OOD](https://github.com/jingkang50/ICCV21_SCOOD), [Unknown Detection](https://github.com/daintlab/unknown-detection-benchmarks), [Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
