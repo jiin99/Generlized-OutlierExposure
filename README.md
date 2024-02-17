@@ -2,8 +2,8 @@
 
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 
-
-This repository is the official implementation of [Generalized Outlier Exposure](https://www.sciencedirect.com/science/article/abs/pii/S0925231224001425 ). A part of code has been based on the public code of
+This repository is the official implementation of [Generalized Outlier Exposure: Towards a trustworthy out-of-distribution detector without sacrificing accuracy](https://www.sciencedirect.com/science/article/abs/pii/S0925231224001425 ).
+A part of code has been based on the public code of
 [Outlier Exposure](https://github.com/hendrycks/outlier-exposure), [SC-OOD](https://github.com/jingkang50/ICCV21_SCOOD), [Unknown Detection](https://github.com/daintlab/unknown-detection-benchmarks), [Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
 # Overview
@@ -71,16 +71,15 @@ python test.py --dataset cifar100 --model res34 --conf mcp --gpu-id 0 --datapath
 <img align="center" src="./fig/main_result.png" width="700">
 
 ## Citation
-'''
+```
 @article{koo2024generalized,
   title={Generalized Outlier Exposure: Towards a trustworthy out-of-distribution detector without sacrificing accuracy},
   author={Koo, Jiin and Choi, Sungjoon and Hwang, Sangheum},
   journal={Neurocomputing},
   pages={127371},
-  year={2024},
-  publisher={Elsevier}
+  year={2024}
 }
-'''
+```
 
 ### Contact for issues
 - Jiin Koo, jiinnine@ds.seoultech.ac.kr
