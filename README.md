@@ -1,4 +1,4 @@
-# [Generlized-OutlierExposure](https://www.sciencedirect.com/science/article/abs/pii/S0925231224001425 )
+# Generlized-OutlierExposure
 
 ![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=for-the-badge&logo=PyTorch&logoColor=white)
 
