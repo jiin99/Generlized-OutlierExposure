@@ -69,3 +69,18 @@ python test.py --dataset cifar100 --model res34 --conf mcp --gpu-id 0 --datapath
 
 ## Results
 <img align="center" src="./fig/main_result.png" width="700">
+
+## Citation
+'''
+@article{koo2024generalized,
+  title={Generalized Outlier Exposure: Towards a trustworthy out-of-distribution detector without sacrificing accuracy},
+  author={Koo, Jiin and Choi, Sungjoon and Hwang, Sangheum},
+  journal={Neurocomputing},
+  pages={127371},
+  year={2024},
+  publisher={Elsevier}
+}
+'''
+
+### Contact for issues
+- Jiin Koo, jiinnine@ds.seoultech.ac.kr
